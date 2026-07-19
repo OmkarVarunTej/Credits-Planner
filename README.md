@@ -1,4 +1,4 @@
-# Curriculum Dashboard (VANGUARD)
+# Curriculum Dashboard (VARUN)
 
 React + TypeScript + Vite + Tailwind CSS project.
 
