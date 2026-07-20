@@ -82,7 +82,7 @@ export default function AllCourses() {
       subtitle="Every course across every basket — search, filter, and sort the complete curriculum."
     >
       {/* Search + filters */}
-      <div className="sticky top-[65px] z-20 -mx-6 mb-10 bg-brandblack/90 px-6 py-4 backdrop-blur-md sm:-mx-10 sm:px-10">
+      <div className="mb-10 rounded-2xl bg-brandblack/90 py-4 backdrop-blur-md">
         <div className="flex flex-col gap-3 sm:flex-row sm:items-center">
           <div className="relative flex-1">
             <Search className="pointer-events-none absolute left-4 top-1/2 h-4 w-4 -translate-y-1/2 text-white/40" />
@@ -166,14 +166,14 @@ export default function AllCourses() {
       ) : (
         <div className="space-y-16">
           <section id="credit-summary">
-            <h2 className="sticky top-[150px] z-10 mb-4 bg-brandblack/90 py-2 font-podium text-xl uppercase tracking-wide text-white backdrop-blur-md">
+            <h2 className="sticky top-[65px] z-10 mb-4 bg-brandblack/90 py-2 font-podium text-xl uppercase tracking-wide text-white backdrop-blur-md">
               Credit Summary
             </h2>
             <CurriculumOverviewTable />
           </section>
 
           <section id="core-distribution">
-            <h2 className="sticky top-[150px] z-10 mb-4 bg-brandblack/90 py-2 font-podium text-xl uppercase tracking-wide text-white backdrop-blur-md">
+            <h2 className="sticky top-[65px] z-10 mb-4 bg-brandblack/90 py-2 font-podium text-xl uppercase tracking-wide text-white backdrop-blur-md">
               University Core Distribution
             </h2>
             <div className="hidden overflow-hidden rounded-2xl glass md:block">
@@ -214,7 +214,7 @@ export default function AllCourses() {
 
           {SECTIONS.filter((s) => s.courses).map((section) => (
             <section key={section.id} id={section.id}>
-              <h2 className="sticky top-[150px] z-10 mb-4 bg-brandblack/90 py-2 font-podium text-xl uppercase tracking-wide text-white backdrop-blur-md">
+              <h2 className="sticky top-[65px] z-10 mb-4 bg-brandblack/90 py-2 font-podium text-xl uppercase tracking-wide text-white backdrop-blur-md">
                 {section.label}
               </h2>
               <CourseTable courses={section.courses!} />
