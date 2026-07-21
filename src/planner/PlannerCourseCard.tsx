@@ -10,12 +10,12 @@ interface PlannerCourseCardProps {
 }
 
 export default function PlannerCourseCard({ course, basket }: PlannerCourseCardProps) {
-  const { selections, toggle, canSelect } = usePlanner();
+  const { isSelected, toggle, canSelect } = usePlanner();
 
   const isCompleted = course.status === "Completed";
   const isRegistered = course.status === "Registered";
-  const isSelected = selections.has(course.code);
-  const disabled = !isCompleted && !isSelected && !canSelect(course, basket);
+  const selected = isSelected(basket.key, course.code);
+  const disabled = !isCompleted && !selected && !canSelect(course, basket);
 
   return (
     <motion.div
@@ -26,7 +26,7 @@ export default function PlannerCourseCard({ course, basket }: PlannerCourseCardP
       className={`group relative rounded-2xl border p-4 transition-all duration-200 sm:p-5 ${
         isCompleted
           ? "border-emerald-500/20 bg-emerald-500/5"
-          : isSelected
+          : selected
           ? "border-brandred/40 bg-brandred/10"
           : disabled
           ? "border-white/5 bg-white/[0.02] opacity-50"
@@ -42,17 +42,17 @@ export default function PlannerCourseCard({ course, basket }: PlannerCourseCardP
             </div>
           ) : (
             <button
-              onClick={() => !disabled && toggle(course.code)}
+              onClick={() => !disabled && toggle(basket.key, course.code)}
               disabled={disabled}
               className={`grid h-5 w-5 place-items-center rounded border transition ${
-                isSelected
+                selected
                   ? "border-brandred bg-brandred"
                   : disabled
                   ? "cursor-not-allowed border-white/10 bg-white/5"
                   : "border-white/20 bg-white/5 hover:border-white/40"
               }`}
             >
-              {isSelected && <Check className="h-3.5 w-3.5 text-white" />}
+              {selected && <Check className="h-3.5 w-3.5 text-white" />}
             </button>
           )}
         </div>

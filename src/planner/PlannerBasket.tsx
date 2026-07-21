@@ -24,13 +24,13 @@ export default function PlannerBasket({
   defaultOpen = false,
 }: PlannerBasketProps) {
   const [open, setOpen] = useState(defaultOpen);
-  const { selections, completedCredits, selectedCredits, basketTotal } = usePlanner();
+  const { isSelected, completedCredits, selectedCredits, basketTotal } = usePlanner();
 
   const completed = completedCredits(basket);
   const selected = selectedCredits(basket);
   const total = basketTotal(basket);
   const selectedCount = basket.courses.filter(
-    (c) => c.status !== "Completed" && selections.has(c.code)
+    (c) => c.status !== "Completed" && isSelected(basket.key, c.code)
   ).length;
 
   // Filter & sort
@@ -54,21 +54,22 @@ export default function PlannerBasket({
 
     // Selected filter
     if (selectedFilter === "selected") {
-      list = list.filter((c) => selections.has(c.code) || c.status === "Completed");
+      list = list.filter((c) => isSelected(basket.key, c.code) || c.status === "Completed");
     } else if (selectedFilter === "not-selected") {
-      list = list.filter((c) => !selections.has(c.code) && c.status !== "Completed");
+      list = list.filter((c) => !isSelected(basket.key, c.code) && c.status !== "Completed");
     }
 
-    // Sort
-    if (sortBy === "code") list.sort((a, b) => a.code.localeCompare(b.code));
-    else if (sortBy === "credits") list.sort((a, b) => b.credits - a.credits);
+    // Sort - copy array first to guarantee immutability
+    const sorted = [...list];
+    if (sortBy === "code") sorted.sort((a, b) => a.code.localeCompare(b.code));
+    else if (sortBy === "credits") sorted.sort((a, b) => b.credits - a.credits);
     else if (sortBy === "status") {
       const order = { Completed: 0, Registered: 1, "Not Registered": 2 };
-      list.sort((a, b) => order[a.status] - order[b.status]);
-    } else if (sortBy === "name") list.sort((a, b) => a.name.localeCompare(b.name));
+      sorted.sort((a, b) => order[a.status] - order[b.status]);
+    } else if (sortBy === "name") sorted.sort((a, b) => a.name.localeCompare(b.name));
 
-    return list;
-  }, [basket.courses, search, statusFilter, selectedFilter, sortBy, selections]);
+    return sorted;
+  }, [basket.courses, basket.key, search, statusFilter, selectedFilter, sortBy, isSelected]);
 
   // Don't render basket if no courses match filters
   if (filtered.length === 0 && (search || statusFilter !== "all" || selectedFilter !== "all")) {
@@ -142,7 +143,7 @@ export default function PlannerBasket({
             <div className="border-t border-white/10 p-4 sm:p-6">
               <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-2">
                 {filtered.map((course) => (
-                  <PlannerCourseCard key={course.code} course={course} basket={basket} />
+                  <PlannerCourseCard key={`${basket.key}-${course.code}`} course={course} basket={basket} />
                 ))}
               </div>
               {filtered.length === 0 && (

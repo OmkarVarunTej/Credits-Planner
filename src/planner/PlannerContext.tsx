@@ -52,10 +52,21 @@ export const CATEGORY_LIMITS: Record<string, number> = {
 // ─── localStorage-backed store ───
 const STORAGE_KEY = "planner-selections";
 
+export function getCourseSelectionKey(basketKey: string, courseCode: string): string {
+  return `${basketKey}-${courseCode}`;
+}
+
+function isCourseSelected(basketKey: string, courseCode: string, sel: Set<string>): boolean {
+  return sel.has(getCourseSelectionKey(basketKey, courseCode));
+}
+
 function loadSelections(): Set<string> {
   try {
     const raw = localStorage.getItem(STORAGE_KEY);
-    if (raw) return new Set(JSON.parse(raw) as string[]);
+    if (raw) {
+      const parsed = JSON.parse(raw) as string[];
+      return new Set(parsed.filter((key) => typeof key === "string" && key.includes("-")));
+    }
   } catch { /* ignore */ }
   return new Set();
 }
@@ -75,9 +86,10 @@ function subscribe(cb: () => void) {
 }
 function emit() { _listeners.forEach((l) => l()); }
 
-function toggleCode(code: string) {
+function toggleCourse(basketKey: string, courseCode: string) {
+  const key = getCourseSelectionKey(basketKey, courseCode);
   const next = new Set(_selections);
-  if (next.has(code)) next.delete(code); else next.add(code);
+  if (next.has(key)) next.delete(key); else next.add(key);
   _selections = next;
   saveSelections(next);
   emit();
@@ -98,7 +110,7 @@ function completedCreditsForBasket(basket: BasketDef) {
 
 function selectedCreditsForBasket(basket: BasketDef, sel: Set<string>) {
   return basket.courses
-    .filter((c) => sel.has(c.code) && c.status !== "Completed")
+    .filter((c) => isCourseSelected(basket.key, c.code, sel) && c.status !== "Completed")
     .reduce((s, c) => s + c.credits, 0);
 }
 
@@ -108,7 +120,7 @@ function totalForBasket(basket: BasketDef, sel: Set<string>) {
 
 function canSelectCourse(course: Course, basket: BasketDef, sel: Set<string>) {
   if (course.status === "Completed") return false;
-  if (sel.has(course.code)) return true; // can always deselect
+  if (isCourseSelected(basket.key, course.code, sel)) return true; // can always deselect
   return totalForBasket(basket, sel) + course.credits <= basket.maxCredits + 5;
 }
 
@@ -133,7 +145,8 @@ function categoryTotals(category: string, sel: Set<string>): CategoryTotals {
 // ─── Context ───
 interface PlannerContextValue {
   selections: Set<string>;
-  toggle: (code: string) => void;
+  isSelected: (basketKey: string, courseCode: string) => boolean;
+  toggle: (basketKey: string, courseCode: string) => void;
   reset: () => void;
   canSelect: (course: Course, basket: BasketDef) => boolean;
   completedCredits: (basket: BasketDef) => number;
@@ -150,7 +163,11 @@ export function PlannerProvider({ children }: { children: ReactNode }) {
 
   const value: PlannerContextValue = {
     selections,
-    toggle: useCallback((code: string) => toggleCode(code), []),
+    isSelected: useCallback(
+      (basketKey: string, courseCode: string) => isCourseSelected(basketKey, courseCode, selections),
+      [selections]
+    ),
+    toggle: useCallback((basketKey: string, courseCode: string) => toggleCourse(basketKey, courseCode), []),
     reset: useCallback(() => resetAll(), []),
     canSelect: useCallback((c: Course, b: BasketDef) => canSelectCourse(c, b, selections), [selections]),
     completedCredits: useCallback((b: BasketDef) => completedCreditsForBasket(b), []),
@@ -178,3 +195,4 @@ export function usePlanner() {
   if (!ctx) throw new Error("usePlanner must be used inside PlannerProvider");
   return ctx;
 }
+
