@@ -34,7 +34,7 @@ export default function CourseTable({ courses, showBasket = false }: CourseTable
           <tbody>
             {courses.map((c, i) => (
               <motion.tr
-                key={c.code + i}
+                key={c.basket ? `${c.basket}-${c.code}` : c.code}
                 initial={{ opacity: 0, y: 10 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true, margin: "-40px" }}
@@ -63,7 +63,7 @@ export default function CourseTable({ courses, showBasket = false }: CourseTable
       <div className="grid gap-3 md:hidden">
         {courses.map((c, i) => (
           <motion.div
-            key={c.code + i}
+            key={c.basket ? `${c.basket}-${c.code}` : c.code}
             initial={{ opacity: 0, y: 12 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, margin: "-20px" }}
