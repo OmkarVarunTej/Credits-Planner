@@ -130,7 +130,7 @@ export default function Hero({ onExploreCurriculum }: HeroProps) {
         {/* Hero content */}
         <div className="flex flex-1 items-center px-6 sm:px-10 lg:px-16 text-center sm:text-left">
           <div className="max-w-3xl mx-auto sm:mx-0 flex flex-col items-center sm:items-start">
-            <div className="animate-fade-up mb-6 flex flex-col items-center sm:items-start gap-1 text-xs uppercase tracking-[0.3em] text-white/70 sm:text-sm lg:mb-8">
+            <div className="animate-fade-up mb-4 flex flex-col items-center sm:items-start gap-1 text-xs uppercase tracking-[0.3em] text-white/70 sm:text-sm sm:mb-5 lg:mb-6">
               <div className="flex items-center gap-2">
                 <Crown className="h-4 w-4 text-white/70" />
                 VIT-AP University
@@ -146,7 +146,7 @@ export default function Hero({ onExploreCurriculum }: HeroProps) {
               <span className="block text-[clamp(2.8rem,8vw,7rem)]">Graduate.</span>
             </h1>
 
-            <p className="animate-fade-up-delay-2 mt-6 max-w-md text-sm leading-relaxed text-white/70 sm:text-base lg:mt-8">
+            <p className="animate-fade-up-delay-2 mt-4 max-w-md text-sm leading-relaxed text-white/70 sm:mt-5 sm:text-base lg:mt-6">
               Explore the complete Integrated M.Tech Software Engineering
               curriculum including University Core, Programme Core, Programme
               Electives and University Electives.{" "}
@@ -156,7 +156,7 @@ export default function Hero({ onExploreCurriculum }: HeroProps) {
               </span>
             </p>
 
-            <div className="animate-fade-up-delay-3 mt-8 flex flex-wrap justify-center sm:justify-start items-center gap-4 sm:gap-6 lg:mt-10">
+            <div className="animate-fade-up-delay-3 mt-5 flex flex-wrap justify-center sm:justify-start items-center gap-4 sm:gap-6 sm:mt-6 lg:mt-7">
               <button
                 onClick={onExploreCurriculum}
                 className="group flex items-center gap-2 bg-black px-5 py-3 text-[11px] uppercase tracking-widest text-white transition hover:bg-neutral-900 sm:px-7 sm:py-4 sm:text-xs"
@@ -174,7 +174,7 @@ export default function Hero({ onExploreCurriculum }: HeroProps) {
               </div>
             </div>
 
-            <div className="animate-fade-up-delay-4 mt-8 flex flex-wrap justify-center sm:justify-start gap-6 sm:mt-10 sm:gap-8 lg:mt-14 lg:gap-12">
+            <div className="animate-fade-up-delay-4 mt-6 flex flex-wrap justify-center sm:justify-start gap-6 sm:mt-8 sm:gap-8 lg:mt-10 lg:gap-12">
               {[
                 ["200", "Total Credits"],
                 ["102", "University Core"],
