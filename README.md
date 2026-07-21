@@ -2,6 +2,8 @@
 
 A premium, dark-themed web dashboard for exploring the **Integrated M.Tech Software Engineering** curriculum at **VIT-AP University**. Browse every course, track earned/remaining credits across all baskets, and plan your semester selections with a live credit calculator.
 
+🔗 **Live Demo**: [https://creditsplanner.netlify.app](https://creditsplanner.netlify.app)
+
 ---
 
 ## ✨ Features
