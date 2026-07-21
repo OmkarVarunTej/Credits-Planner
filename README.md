@@ -22,9 +22,10 @@ A premium, dark-themed web dashboard for exploring the **Integrated M.Tech Softw
 ### 📝 Curriculum Planner
 - Select courses you plan to take — credits are calculated **live**.
 - Basket credit limits are enforced with visual feedback.
+- **Independent Basket State**: Course selections use composite keys (`${basketKey}-${courseCode}`), ensuring selections in one basket (e.g. University Elective) never trigger selections in another (e.g. Humanities).
 - Filter by status, selection state; sort by code, name, credits, or status.
 - Sticky footer summary bar showing per-category and grand totals.
-- **Selections auto-persist** in `localStorage` — survives page reload.
+- **Selections auto-persist** in `localStorage` — stored independently per basket and survives page reload.
 - One-click reset with a confirmation dialog.
 
 ### 🗂️ Category Pages
